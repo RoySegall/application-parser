@@ -1,11 +1,9 @@
 import { resolve } from 'path';
 import * as StreamZip from 'node-stream-zip';
 import * as xml from 'fast-xml-parser';
-import {validationOptionsOptional} from "fast-xml-parser";
+import * as BinaryXML from 'binary-xml'
 import {AndroidMetadata, Device, IOSMetadata} from "./types";
-import * as xml2js from 'xml2js'
-
-const BinaryXML = require('binary-xml');
+import type {validationOptionsOptional} from "fast-xml-parser";
 
 function parseData(device: Device, xmlData: string | Buffer, validationOptions?: validationOptionsOptional | boolean): IOSMetadata | AndroidMetadata {
     const xmlParser = new xml.XMLParser();
@@ -19,7 +17,6 @@ function parseData(device: Device, xmlData: string | Buffer, validationOptions?:
     const reader = new BinaryXML(xmlData);
     return reader.parse(xmlData) as AndroidMetadata;
 }
-
 
 async function getApplicationMetadata(path: string, device: Device): Promise<IOSMetadata | AndroidMetadata> {
     const zip = new StreamZip.async({ file: path });
