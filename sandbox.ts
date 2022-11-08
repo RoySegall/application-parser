@@ -1,11 +1,9 @@
 import { resolve } from 'path';
 import * as StreamZip from 'node-stream-zip';
 import * as xml from 'fast-xml-parser';
+import * as BinaryXML from 'binary-xml';
 import {AndroidMetadata, Device, IOSMetadata} from "./types";
 import type {validationOptionsOptional} from "fast-xml-parser";
-
-// need a module declaration 🤷‍♀️
-const BinaryXML = require('binary-xml');
 
 function parseData(device: Device, xmlData: string | Buffer, validationOptions?: validationOptionsOptional | boolean): IOSMetadata | AndroidMetadata {
     const xmlParser = new xml.XMLParser();
@@ -19,8 +17,9 @@ function parseData(device: Device, xmlData: string | Buffer, validationOptions?:
     const reader = new BinaryXML(xmlData);
     const data = reader.parse(xmlData);
 
-    // todo: handle any
-    return Object.fromEntries(Object.values(data.attributes).map((attribute: any) => [attribute.name, attribute.value]));
+    const keyValuePairs = Object.values(data.attributes)
+        .map((attribute: {name: string, value: string}) => [attribute.name, attribute.value]);
+    return Object.fromEntries(keyValuePairs);
 }
 
 async function getApplicationMetadata(path: string, device: Device): Promise<IOSMetadata | AndroidMetadata> {
