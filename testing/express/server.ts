@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as cors from 'cors';
 import {extname, resolve, basename} from 'path';
 import * as multer from 'multer';
-import getApplicationMetadata from "../../src";
+import {getApplicationMetadata} from "../../src";
 
 const app = express();
 const port = 3500;
@@ -43,6 +43,5 @@ app.post('/', upload.any(), async (req, res) => {
 });
 
 app.listen(port, () => {
-    // eslint-disable-next-line
     console.log(`Example app listening on port ${port}`);
 });
