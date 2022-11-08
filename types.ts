@@ -29,4 +29,11 @@ export interface IOSMetadata {
 }
 
 export interface AndroidMetadata {
+    versionCode?: any;
+    versionName: string;
+    compileSdkVersion?: any;
+    compileSdkVersionCodename: string;
+    package: string;
+    platformBuildVersionCode?: any;
+    platformBuildVersionName?: any;
 }

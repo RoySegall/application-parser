@@ -1,9 +1,11 @@
 import { resolve } from 'path';
 import * as StreamZip from 'node-stream-zip';
 import * as xml from 'fast-xml-parser';
-import * as BinaryXML from 'binary-xml'
 import {AndroidMetadata, Device, IOSMetadata} from "./types";
 import type {validationOptionsOptional} from "fast-xml-parser";
+
+// need a module declaration 🤷‍♀️
+const BinaryXML = require('binary-xml');
 
 function parseData(device: Device, xmlData: string | Buffer, validationOptions?: validationOptionsOptional | boolean): IOSMetadata | AndroidMetadata {
     const xmlParser = new xml.XMLParser();
@@ -11,11 +13,14 @@ function parseData(device: Device, xmlData: string | Buffer, validationOptions?:
 
     if (device == 'ios') {
         const {key: keys, string: values} = parsedData.plist.dict;
-        return Object.fromEntries(keys.map((key: string, i: number) => [key, values[i]]))
+        return Object.fromEntries(keys.map((key: string, i: number) => [key, values[i]])) as IOSMetadata
     }
 
     const reader = new BinaryXML(xmlData);
-    return reader.parse(xmlData) as AndroidMetadata;
+    const data = reader.parse(xmlData);
+
+    // todo: handle any
+    return Object.fromEntries(Object.values(data.attributes).map((attribute: any) => [attribute.name, attribute.value]));
 }
 
 async function getApplicationMetadata(path: string, device: Device): Promise<IOSMetadata | AndroidMetadata> {
@@ -35,11 +40,11 @@ async function getApplicationMetadata(path: string, device: Device): Promise<IOS
 }
 
 (async () => {
-    // const ios = resolve(process.cwd(), 'demo-applications', 'ios.ipa');
-    // const data = await getApplicationMetadata(ios, 'ios');
-
+    const ios = resolve(process.cwd(), 'demo-applications', 'ios.ipa');
     const android = resolve(process.cwd(), 'demo-applications', 'android.apk');
-    const data = await getApplicationMetadata(android, 'android')
 
-    console.log(data);
+    const iosData = await getApplicationMetadata(ios, 'ios');
+    const androidData = await getApplicationMetadata(android, 'android')
+
+    console.log({iosData, androidData});
 })();

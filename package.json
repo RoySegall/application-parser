@@ -7,7 +7,7 @@
     "sandbox": "ts-node-dev --respawn sandbox.ts"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "binary-xml": "^0.0.1",
     "node-stream-zip": "^1.15.0",
