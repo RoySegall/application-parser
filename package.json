@@ -1,12 +1,12 @@
 {
   "name": "application-parser",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Parsing manifest data from apk/ipa file. With typings 🤘",
+  "main": "src/index.ts",
   "scripts": {
     "sandbox": "ts-node-dev --respawn sandbox.ts"
   },
-  "author": "",
+  "author": "r.segall@tricentis.com",
   "license": "MIT",
   "dependencies": {
     "binary-xml": "^0.0.1",
