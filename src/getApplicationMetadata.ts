@@ -5,10 +5,11 @@ import * as xml from "fast-xml-parser";
 import * as StreamZip from "node-stream-zip";
 
 function parseData(device: Device, xmlData: string | Buffer, validationOptions?: validationOptionsOptional | boolean): IOSMetadata | AndroidMetadata {
-    const xmlParser = new xml.XMLParser();
-    const parsedData = xmlParser.parse(xmlData);
 
     if (device == 'ios') {
+        const xmlParser = new xml.XMLParser();
+        const parsedData = xmlParser.parse(xmlData);
+
         const {key: keys, string: values} = parsedData.plist.dict;
         return Object.fromEntries(keys.map((key: string, i: number) => [key, values[i]])) as IOSMetadata
     }

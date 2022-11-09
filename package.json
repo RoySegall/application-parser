@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "sandbox": "ts-node-dev --respawn sandbox.ts",
-    "test": "vitest ./src/*.test.ts"
+    "test": "vitest ./src/*.test.ts",
+    "build": "tsc --build"
   },
   "author": "r.segall@tricentis.com",
   "license": "MIT",
